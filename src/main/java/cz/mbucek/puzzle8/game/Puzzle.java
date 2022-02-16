@@ -8,22 +8,37 @@ public class Puzzle extends Shape{
 	protected Grid grid;
 	protected int width;
 	protected int height;
+	protected Point<Integer> offset;
 	
-	public Puzzle(Main main) {
+	public Puzzle(Main main, int offsetX, int offsetY) {
 		super(main, null);
 		grid = new Grid(main, this, 3);
 		width = main.width - Block.MODIFIER;
 		height = main.height - Block.MODIFIER;
+		offset = new Point<Integer>(offsetX, offsetY);
+	}
+	
+	public void setGrid(int[][] grid) {
+		this.grid = new Grid(main, this, 3, grid);
+	}
+	
+	public Grid getGrid() {
+		return grid;
 	}
 	
 	@Override
 	public int getWidth() {
-		return width;
+		return width - offset.x();
 	}
 	
 	@Override
 	public int getHeight() {
-		return height;
+		return height - offset.y();
+	}
+	
+	@Override
+	public Point<Integer> getOffset() {
+		return offset;
 	}
 	
 	@Override

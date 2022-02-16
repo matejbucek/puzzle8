@@ -41,14 +41,15 @@ public class Block extends Shape{
 	}
 
 	private void draw(MutablePoint<Integer> point) {
+		var offset = getOffset();
 		var actualX = getModifiedX(point);
 		var actualY = getModifiedY(point);
 		main.stroke(100);
 		main.fill(255);
-		main.rect(actualX.x(), actualY.x(), actualX.y(), actualY.y(), MODIFIER);
+		main.rect(actualX.x() + offset.x(), actualY.x() + offset.y(), actualX.y(), actualY.y(), MODIFIER);
 		main.textSize(TEXT_SIZE);
 		main.fill(0);
-		main.text(value, actualX.x() + actualX.y() / 2 - TEXT_SIZE/4, actualY.x() + actualY.y() / 2 + TEXT_SIZE/4);
+		main.text(value, actualX.x() + offset.x() + actualX.y() / 2 - TEXT_SIZE/4, actualY.x() + offset.y() + actualY.y() / 2 + TEXT_SIZE/4);
 	}
 	
 	@Override
@@ -77,8 +78,11 @@ public class Block extends Shape{
 
 	@Override
 	public boolean isClicked(Point<Integer> point) {
+		var offset = getOffset();
 		var actualX = getModifiedX(current);
+		actualX.x(actualX.x() + offset.x());
 		var actualY = getModifiedY(current);
+		actualY.x(actualY.x() + offset.y());
 		return point.x() > actualX.x() && point.x() < actualX.x() + actualX.y() && point.y() > actualY.x() && point.y() < actualY.x() + actualY.y();
 	}
 

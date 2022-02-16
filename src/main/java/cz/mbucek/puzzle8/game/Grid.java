@@ -11,14 +11,27 @@ public class Grid extends Shape{
 	protected Block[][] grid;
 	
 	public Grid(Main main, Shape parent, int size) {
+		this(main, parent, size, Solver.generateSolvableGrid(size));
+	}
+	
+	public Grid(Main main, Shape parent, int size, int[][] originalGrid) {
 		super(main, parent);
 		grid = new Block[size][size];
-		var originalGrid = Solver.generateSolvableGrid(size);
-		for(int i = 0; i < size; i++) {
-			for(int j = 0; j < size; j++) {
+		for(int i = 0; i < grid.length; i++) {
+			for(int j = 0; j < grid.length; j++) {
 				grid[i][j] = new Block(main, this, new MutablePoint<Integer>(i, j), size, originalGrid[i][j]);
 			}
 		}
+	}
+	
+	public int[][] getGrid(){
+		var intGrid = new int[grid.length][grid.length];
+		for(int i = 0; i < grid.length; i++) {
+			for(int j = 0; j < grid.length; j++) {
+				intGrid[i][j] = grid[i][j].getValue();
+			}
+		}
+		return intGrid;
 	}
 
 	@Override

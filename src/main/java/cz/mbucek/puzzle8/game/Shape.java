@@ -21,6 +21,10 @@ public abstract class Shape {
 		return parent.getHeight();
 	}
 	
+	public Point<Integer> getOffset(){
+		return parent.getOffset();
+	}
+	
 	public abstract void draw();
 	public abstract boolean isClicked(Point<Integer> point);
 }

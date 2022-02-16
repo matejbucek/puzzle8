@@ -2,6 +2,7 @@ package cz.mbucek.puzzle8;
 
 import cz.mbucek.puzzle8.game.Puzzle;
 import cz.mbucek.puzzle8.general.Point;
+import cz.mbucek.puzzle8.logic.Solver;
 import processing.core.PApplet;
 
 public class Main extends PApplet{
@@ -14,7 +15,7 @@ public class Main extends PApplet{
 	
 	public void settings() {
 		size(600, 600);
-		puzzle = new Puzzle(this);
+		puzzle = new Puzzle(this, 0, 0);
 	}
 	
 	public void setup() {
@@ -27,5 +28,21 @@ public class Main extends PApplet{
 	
 	public void mouseClicked() {
 		puzzle.isClicked(new Point<Integer>(mouseX, mouseY));
+	}
+	
+	public void keyPressed() {
+		//Generates solvable
+		if(key == 'g') {
+			var solvable = new int[][]{{1, 0, 5}, {2, 7, 4}, {3, 6, 8}};
+			puzzle.setGrid(solvable);
+		//Solve
+		}else if(key == 's') {
+			
+		//Debug
+		}else if(key == 'd') {
+			var grid = puzzle.getGrid().getGrid();
+			System.out.println(Solver.isGridSolvable(grid));
+			Solver.printGrid(grid);
+		}
 	}
 }
