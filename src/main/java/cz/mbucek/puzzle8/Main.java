@@ -1,21 +1,30 @@
 package cz.mbucek.puzzle8;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+
 import cz.mbucek.puzzle8.game.Puzzle;
 import cz.mbucek.puzzle8.general.Point;
+import cz.mbucek.puzzle8.logic.AStar;
+import cz.mbucek.puzzle8.logic.Node;
 import cz.mbucek.puzzle8.logic.Solver;
 import processing.core.PApplet;
 
 public class Main extends PApplet{
 
 	private Puzzle puzzle;
+	private ThreadPoolExecutor executor;
 	
 	public static void main(String[] args) {
-		PApplet.main(Main.class.getName());
+		AStar aStar = new AStar(new Node(new int[][]{{1, 2, 3}, {0, 7, 6}, {5, 4, 8}}));
+		System.out.println(aStar.solve());
+		//PApplet.main(Main.class.getName());
 	}
 	
 	public void settings() {
 		size(600, 600);
 		puzzle = new Puzzle(this, 0, 0);
+		executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
 	}
 	
 	public void setup() {
@@ -33,11 +42,16 @@ public class Main extends PApplet{
 	public void keyPressed() {
 		//Generates solvable
 		if(key == 'g') {
-			var solvable = new int[][]{{1, 0, 5}, {2, 7, 4}, {3, 6, 8}};
+			var solvable = new int[][]{{1, 2, 3}, 
+									   {0, 7, 6}, 
+									   {5, 4, 8}};
 			puzzle.setGrid(solvable);
 		//Solve
 		}else if(key == 's') {
-			
+			System.out.println("Solve");
+			executor.submit(() -> {
+				System.out.println("Solved");
+			});
 		//Debug
 		}else if(key == 'd') {
 			var grid = puzzle.getGrid().getGrid();

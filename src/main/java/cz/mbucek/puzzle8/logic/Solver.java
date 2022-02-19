@@ -1,14 +1,16 @@
 package cz.mbucek.puzzle8.logic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import cz.mbucek.puzzle8.game.Grid;
+import cz.mbucek.puzzle8.general.Point;
 
 public class Solver {
-	
+
 	private static Random random = new Random();
-	
+
 	public static int[][] generateRandomGrid(int size){
 		var grid = new int[size][size];
 		int counter = 1;
@@ -17,15 +19,15 @@ public class Solver {
 				grid[i][j] = counter++;
 			}
 		}
-		
+
 		grid[size - 1][size - 1] = 0;
 		for(int i = 0; i < size; i++) {
 			shuffle(grid);
 		}
-	
+
 		return grid;
 	}
-	
+
 	private static void shuffle(int[][] grid) {
 		int tmp;
 		for(int i = 0; i < grid.length; i++) {
@@ -38,11 +40,11 @@ public class Solver {
 			}
 		}
 	}
-	
+
 	public static boolean isGridSolvable(int[][] grid) {
 		int invCounter = 0;
 		for (int i = 0; i < grid.length - 1; i++) {
-	        for (int j = i + 1; j < 3; j++) {
+			for (int j = i + 1; j < 3; j++) {
 				if (grid[j][i] > 0 && grid[j][i] > grid[i][j]) invCounter++;
 			}
 		}
@@ -50,7 +52,7 @@ public class Solver {
 		//printGrid(grid);
 		return invCounter % 2 == 0;
 	}
-	
+
 	public static void printGrid(int[][] grid) {
 		for(int i = 0; i < grid.length; i++) {
 			for(int j = 0; j < grid.length; j++) {
@@ -59,11 +61,11 @@ public class Solver {
 			System.out.println();
 		}
 	}
-	
+
 	private static void repairGrid(int[][] grid) {
 		int tmp;
 		for (int i = 0; i < grid.length - 1; i++) {
-	        for (int j = i + 1; j < 3; j++) {
+			for (int j = i + 1; j < 3; j++) {
 				if (grid[j][i] > 0 && grid[j][i] > grid[i][j]) {
 					tmp = grid[i][j];
 					grid[i][j] = grid[j][i];
@@ -73,21 +75,57 @@ public class Solver {
 			}
 		}
 	}
-	
+
 	public static int[][] generateSolvableGrid(int size){
 		int[][] grid = generateRandomGrid(size);
-		
+
 		while(!isGridSolvable(grid)) {
 			repairGrid(grid);
 		}
-		
+
 		return grid;
 	}
-	
-	public static void solve(Grid grid) {
-		var intGrid = grid.getGrid();
+
+
+
+	private static MoveRecord buildMoveRecord(int i, int j, BlockMove move) {
+		int iTo = i, jTo = j;
+		if(move == BlockMove.DOWN) iTo++;
+		else if(move == BlockMove.UP) iTo--;
+		else if(move == BlockMove.LEFT) jTo--;
+		else if(move == BlockMove.RIGHT) jTo++;
 		
+		return new MoveRecord(i, j, iTo, jTo);
 	}
-	
-	
+
+
+
+	private static void move(int[][] grid, MoveRecord record) {
+		var tmp = grid[record.iFrom()][record.jFrom()];
+		grid[record.iFrom()][record.jFrom()] = grid[record.iTo()][record.jTo()];
+		grid[record.iTo()][record.jTo()] = tmp;
+	}
+
+	public static Point<Integer> find(int[][] grid, int x){
+		for(int i = 0; i < grid.length; i++) {
+			for(int j = 0; j < grid.length; j++) {
+				if(grid[i][j] == x) { 
+					return new Point<Integer>(i, j);
+				}
+			}
+		}
+		return null;
+	}
+
+
+	private static boolean isSolved(int[][] actual, int[][] desired) {
+		for(int i = 0; i < actual.length; i++) {
+			for(int j = 0; j < actual.length; j++) {
+				if(actual[i][j] != desired[i][j]) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 }

@@ -19,7 +19,7 @@ public class Grid extends Shape{
 		grid = new Block[size][size];
 		for(int i = 0; i < grid.length; i++) {
 			for(int j = 0; j < grid.length; j++) {
-				grid[i][j] = new Block(main, this, new MutablePoint<Integer>(i, j), size, originalGrid[i][j]);
+				grid[i][j] = new Block(main, this, new MutablePoint<Integer>(j, i), size, originalGrid[i][j]);
 			}
 		}
 	}
@@ -48,35 +48,37 @@ public class Grid extends Shape{
 		var point = block.getPosition();
 		int x, y;
 		//Up check
-		if((point.x() - 1) >= 0 && grid[point.x() - 1][point.y()].getValue() == 0) {
-			x = point.x() - 1;
-			y = point.y();
+		if((point.y() - 1) >= 0 && grid[point.y() - 1][point.x()].getValue() == 0) {
+			x = point.y() - 1;
+			y = point.x();
 			block.move(grid[x][y]);
 			grid[x + 1][y] = grid[x][y]; 
 			grid[x][y] = block;
 		//Down check
-		} else if((point.x() + 1) < grid.length && grid[point.x() + 1][point.y()].getValue() == 0) {
-			x = point.x() + 1;
-			y = point.y();
+		} else if((point.y() + 1) < grid.length && grid[point.y() + 1][point.x()].getValue() == 0) {
+			x = point.y() + 1;
+			y = point.x();
 			block.move(grid[x][y]);
 			grid[x - 1][y] = grid[x][y]; 
 			grid[x][y] = block;
 		//Left check
-		} else if((point.y() - 1) >= 0 && grid[point.x()][point.y() - 1].getValue() == 0) {
-			x = point.x();
-			y = point.y() - 1;
+		} else if((point.x() - 1) >= 0 && grid[point.y()][point.x() - 1].getValue() == 0) {
+			x = point.y();
+			y = point.x() - 1;
 			block.move(grid[x][y]);
 			grid[x][y + 1] = grid[x][y]; 
 			grid[x][y] = block;
 		//Right check
-		} else if((point.y() + 1) < grid.length && grid[point.x()][point.y() + 1].getValue() == 0) {
-			x = point.x();
-			y = point.y() + 1;
+		} else if((point.x() + 1) < grid.length && grid[point.y()][point.x() + 1].getValue() == 0) {
+			x = point.y();
+			y = point.x() + 1;
 			block.move(grid[x][y]);
 			grid[x][y - 1] = grid[x][y]; 
 			grid[x][y] = block;
 		}
 	}
+	
+	
 
 	@Override
 	public boolean isClicked(Point<Integer> point) {
@@ -84,6 +86,7 @@ public class Grid extends Shape{
 		for(int i = 0; i < grid.length; i++) {
 			for(int j = 0; j < grid.length; j++) {
 				if(grid[i][j].isClicked(point)) {
+					System.out.println(grid[i][j].value);
 					moveToFreeSpaceIfPossible(grid[i][j]);
 				}
 			}
