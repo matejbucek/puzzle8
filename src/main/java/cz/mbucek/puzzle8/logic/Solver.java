@@ -1,10 +1,7 @@
 package cz.mbucek.puzzle8.logic;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
-import cz.mbucek.puzzle8.game.Grid;
 import cz.mbucek.puzzle8.general.Point;
 
 public class Solver {
@@ -84,26 +81,6 @@ public class Solver {
 		}
 
 		return grid;
-	}
-
-
-
-	private static MoveRecord buildMoveRecord(int i, int j, BlockMove move) {
-		int iTo = i, jTo = j;
-		if(move == BlockMove.DOWN) iTo++;
-		else if(move == BlockMove.UP) iTo--;
-		else if(move == BlockMove.LEFT) jTo--;
-		else if(move == BlockMove.RIGHT) jTo++;
-		
-		return new MoveRecord(i, j, iTo, jTo);
-	}
-
-
-
-	private static void move(int[][] grid, MoveRecord record) {
-		var tmp = grid[record.iFrom()][record.jFrom()];
-		grid[record.iFrom()][record.jFrom()] = grid[record.iTo()][record.jTo()];
-		grid[record.iTo()][record.jTo()] = tmp;
 	}
 
 	public static Point<Integer> find(int[][] grid, int x){

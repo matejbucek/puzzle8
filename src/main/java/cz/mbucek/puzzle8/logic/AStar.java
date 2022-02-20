@@ -82,7 +82,7 @@ public class AStar {
 		return result;
 	}
 	
-	public int getRow(int value) {				//getting the Row of a value in goalState
+	public int getRow(int value) {
 		int row = 0;
 		for(int i=0; i<=2; i++) {
 			for(int j=0; j<=2; j++) {
@@ -94,7 +94,7 @@ public class AStar {
 			return row;
 	}
 
-	public int getCol(int value) {			//getting the Column of value in goal state used for Manhattan computation
+	public int getCol(int value) {
 		int col = 0;
 		for(int i=0; i<=2; i++) {
 			for(int j=0; j<=2; j++) {

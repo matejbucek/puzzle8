@@ -16,9 +16,9 @@ public class Main extends PApplet{
 	private ThreadPoolExecutor executor;
 	
 	public static void main(String[] args) {
-		AStar aStar = new AStar(new Node(new int[][]{{1, 2, 3}, {0, 7, 6}, {5, 4, 8}}));
-		System.out.println(aStar.solve());
-		//PApplet.main(Main.class.getName());
+		//AStar aStar = new AStar(new Node(new int[][]{{1, 2, 3}, {0, 7, 6}, {5, 4, 8}}));
+		//System.out.println(aStar.solve());
+		PApplet.main(Main.class.getName());
 	}
 	
 	public void settings() {
@@ -50,7 +50,11 @@ public class Main extends PApplet{
 		}else if(key == 's') {
 			System.out.println("Solve");
 			executor.submit(() -> {
-				System.out.println("Solved");
+				var astar = new AStar(new Node(puzzle.getGrid().getGrid()));
+				var path = astar.solve();
+				System.out.println(path);
+				puzzle.setGrid(path.get(0).getGrid());
+				
 			});
 		//Debug
 		}else if(key == 'd') {

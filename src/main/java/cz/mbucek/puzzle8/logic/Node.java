@@ -85,6 +85,7 @@ public class Node {
 			for(int j = 0; j < grid.length; j++) {
 				builder.append(grid[i][j] + ", ");
 			}
+			builder.delete(builder.length()-2, builder.length()-1);
 			builder.append("]");
 		}
 		builder.append("]");
